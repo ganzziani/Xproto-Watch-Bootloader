@@ -4,6 +4,9 @@
  * \brief User board initialization template
  *
  */
+/*
+ * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
+ */
 
 #include <asf.h>
 #include <board.h>

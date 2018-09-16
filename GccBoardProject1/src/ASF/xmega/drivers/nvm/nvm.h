@@ -3,42 +3,35 @@
  *
  * \brief Non Volatile Memory controller driver
  *
- * Copyright (c) 2010-2013 Atmel Corporation. All rights reserved.
+ * Copyright (c) 2010-2018 Microchip Technology Inc. and its subsidiaries.
  *
  * \asf_license_start
  *
  * \page License
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ * Subject to your compliance with these terms, you may use Microchip
+ * software and any derivatives exclusively with Microchip products.
+ * It is your responsibility to comply with third party license terms applicable
+ * to your use of third party software (including open source software) that
+ * may accompany Microchip software.
  *
- * 1. Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- * 3. The name of Atmel may not be used to endorse or promote products derived
- *    from this software without specific prior written permission.
- *
- * 4. This software may only be redistributed and used in connection with an
- *    Atmel microcontroller product.
- *
- * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
- * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
- * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES,
+ * WHETHER EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE,
+ * INCLUDING ANY IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY,
+ * AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT WILL MICROCHIP BE
+ * LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, INCIDENTAL OR CONSEQUENTIAL
+ * LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND WHATSOEVER RELATED TO THE
+ * SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS BEEN ADVISED OF THE
+ * POSSIBILITY OR THE DAMAGES ARE FORESEEABLE.  TO THE FULLEST EXTENT
+ * ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN ANY WAY
+ * RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
+ * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
  *
  * \asf_license_stop
  *
+ */
+/*
+ * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
  */
 #ifndef NVM_H
 #define NVM_H
@@ -918,67 +911,67 @@ static inline void nvm_lb_lock_bits_write(enum NVM_LB_enum lb_lock)
  * \subsection nvm_quickstart_eeprom_case_example_code Example code
  *
  * \code
- * #define EXAMPLE_PAGE 2
- * #define EXAMPLE_ADDR EXAMPLE_PAGE * EEPROM_PAGE_SIZE
- *
- * uint8_t write_page[EEPROM_PAGE_SIZE];
- * uint8_t read_page[EEPROM_PAGE_SIZE];
- *
- * fill_page_with_known_data(write_page);
- * fill_page_with_zeroes(read_page);
- *
- * nvm_eeprom_load_page_to_buffer(write_page);
- * nvm_eeprom_atomic_write_page(EXAMPLE_PAGE);
- *
- * nvm_eeprom_read_buffer(EXAMPLE_ADDR,
- *         read_page, EEPROM_PAGE_SIZE);
- *
- * check_if_pages_are_equal(write_page, read_page);
- * \endcode
+	 #define EXAMPLE_PAGE 2
+	 #define EXAMPLE_ADDR EXAMPLE_PAGE * EEPROM_PAGE_SIZE
+
+	 uint8_t write_page[EEPROM_PAGE_SIZE];
+	 uint8_t read_page[EEPROM_PAGE_SIZE];
+
+	 fill_page_with_known_data(write_page);
+	 fill_page_with_zeroes(read_page);
+
+	 nvm_eeprom_load_page_to_buffer(write_page);
+	 nvm_eeprom_atomic_write_page(EXAMPLE_PAGE);
+
+	 nvm_eeprom_read_buffer(EXAMPLE_ADDR,
+	         read_page, EEPROM_PAGE_SIZE);
+
+	 check_if_pages_are_equal(write_page, read_page);
+\endcode
  *
  * \subsection nvm_quickstart_eeprom_case_workflow Workflow
  *
  * -# We define where we would like to store our data, and we arbitrarily
  *    choose page 2 of EEPROM:
  *     - \code
- *       #define EXAMPLE_PAGE 2
- *       #define EXAMPLE_ADDR EXAMPLE_PAGE * EEPROM_PAGE_SIZE
- *       \endcode
+	#define EXAMPLE_PAGE 2
+	#define EXAMPLE_ADDR EXAMPLE_PAGE * EEPROM_PAGE_SIZE
+\endcode
  * -# Define two tables, one which contains the data which we will write,
  *    and one which we will read the data into:
  *     - \code
- *     uint8_t write_page[EEPROM_PAGE_SIZE];
- *     uint8_t read_page[EEPROM_PAGE_SIZE];
- *       \endcode
+	uint8_t write_page[EEPROM_PAGE_SIZE];
+	uint8_t read_page[EEPROM_PAGE_SIZE];
+\endcode
  * -# Fill the tables with our data, and zero out the read table:
  *     - \code
- *       fill_page_with_known_data(write_page);
- *       fill_page_with_zeroes(read_page);
- *       \endcode
+	fill_page_with_known_data(write_page);
+	fill_page_with_zeroes(read_page);
+\endcode
  *     - \note These functions are undeclared, you should replace them with
  *             your own appropriate functions.
  * -# We load our page into a temporary EEPROM page buffer:
  *     - \code
- *       nvm_eeprom_load_page_to_buffer(write_page);
- *       \endcode
+	nvm_eeprom_load_page_to_buffer(write_page);
+\endcode
  *     - \attention The function used above will not work if memory mapping
  *                  is enabled.
  * -# Do an atomic write of the page from buffer into the specified page:
  *     - \code
- *       nvm_eeprom_atomic_write_page(EXAMPLE_PAGE);
- *       \endcode
+	nvm_eeprom_atomic_write_page(EXAMPLE_PAGE);
+\endcode
  *     - \note The function \ref nvm_eeprom_atomic_write_page() erases the
  *             page before writing the new one. For non-atomic (split)
  *             writing without deleting, see \ref nvm_eeprom_split_write_page()
  * -# Read the page back into our read_page[] table:
  *     - \code
- *       nvm_eeprom_read_buffer(EXAMPLE_ADDR,
- *               read_page, EEPROM_PAGE_SIZE);
- *       \endcode
+	nvm_eeprom_read_buffer(EXAMPLE_ADDR,
+	        read_page, EEPROM_PAGE_SIZE);
+\endcode
  * -# Verify that the page is equal to the one that was written earlier:
  *     - \code
- *       check_if_pages_are_equal(write_page, read_page);
- *       \endcode
+	check_if_pages_are_equal(write_page, read_page);
+\endcode
  *     - \note This function is not declared, you should replace it with your
  *             own appropriate function.
  *
@@ -997,33 +990,33 @@ static inline void nvm_lb_lock_bits_write(enum NVM_LB_enum lb_lock)
  *
  * \subsection nvm_quickstart_fuse_case_example_code Example code
  * \code
- * uint8_t fuse_value;
- * fuse_value = nvm_fuses_read(FUSEBYTE5);
- *
- * if ((fuse_value & NVM_FUSES_BODLVL_gm) == BODLVL_2V1_gc) {
- *     gpio_set_pin_low(LED0_GPIO);
- * }
- * \endcode
+	 uint8_t fuse_value;
+	 fuse_value = nvm_fuses_read(FUSEBYTE5);
+
+	 if ((fuse_value & NVM_FUSES_BODLVL_gm) == BODLVL_2V1_gc) {
+	     gpio_set_pin_low(LED0_GPIO);
+	 }
+\endcode
  *
  * \subsection nvm_quickstart_fuse_case_workflow Workflow
  *
  * -# Create a variable to store the fuse contents:
  *     - \code
- *       uint8_t fuse_value;
- *       \endcode
+	uint8_t fuse_value;
+\endcode
  * -# The fuse value we are interested in, BODLVL, is stored in FUSEBYTE5.
  *    We call the function \ref nvm_fuses_read() to read the fuse into our
  *    variable:
  *     - \code
- *       fuse_value = nvm_fuses_read(FUSEBYTE5);
- *       \endcode
+	fuse_value = nvm_fuses_read(FUSEBYTE5);
+\endcode
  * -# This ends the reading portion, but we would like to see whether the
  *    BOD-level is correct, and if it is, light up an LED:
  *     - \code
- *       if ((fuse_value & NVM_FUSES_BODLVL_gm) == BODLVL_2V1_gc) {
- *           gpio_set_pin_low(LED0_GPIO);
- *       }
- *       \endcode
+	if ((fuse_value & NVM_FUSES_BODLVL_gm) == BODLVL_2V1_gc) {
+	    gpio_set_pin_low(LED0_GPIO);
+	}
+\endcode
  *
  * \section xmega_nvm_quickstart_signature_case Use case 3: Signature row
  *
@@ -1037,34 +1030,34 @@ static inline void nvm_lb_lock_bits_write(enum NVM_LB_enum lb_lock)
  * \subsection xmega_nvm_quickstart_signature_row_example_code Example code
  *
  * \code
- * #define START_ADDR 0x10
- * #define DATA_LENGTH 16
- *
- * uint8_t values[LENGTH];
- * uint8_t i;
- *
- * for (i = 0; i < DATA_LENGTH; i++) {
- *     values[i] = nvm_read_user_signature_row(START_ADDR + i);
- * }
- * \endcode
+	 #define START_ADDR 0x10
+	 #define DATA_LENGTH 16
+
+	 uint8_t values[LENGTH];
+	 uint8_t i;
+
+	 for (i = 0; i < DATA_LENGTH; i++) {
+	     values[i] = nvm_read_user_signature_row(START_ADDR + i);
+	 }
+\endcode
  *
  * \subsection nvm_quickstart_signature_case_workflow Workflow
  *
  * -# Define starting address and length of data segment, and create
  *    variables needed to store and process the data:
  *     - \code
- *       #define START_ADDR 0x10
- *       #define DATA_LENGTH 16
- *
- *       uint8_t values[LENGTH];
- *       uint8_t i;
- *       \endcode
+	       #define START_ADDR 0x10
+	       #define DATA_LENGTH 16
+
+	       uint8_t values[LENGTH];
+	       uint8_t i;
+\endcode
  * -# Iterate through the user signature row, and store our desired data:
  *     - \code
- *       for (i = 0; i < DATA_LENGTH; i++) {
- *           values[i] = nvm_read_user_signature_row(START_ADDR + i);
- *       }
- *       \endcode
+	for (i = 0; i < DATA_LENGTH; i++) {
+	    values[i] = nvm_read_user_signature_row(START_ADDR + i);
+	}
+\endcode
  *
  */
 

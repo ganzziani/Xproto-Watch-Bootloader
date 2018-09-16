@@ -3,9 +3,9 @@
 My GCC definitions
 
 Gabotronics
-February 2012
+September 2018
 
-Copyright 2012 Gabriel Anzziani
+Copyright 2018 Gabriel Anzziani
 
 This program is distributed under the terms of the GNU General Public License 
 
@@ -18,6 +18,7 @@ email me at: gabriel@gabotronics.com
 #define _MYGCCDEF_H
 
 #include <stdint.h>
+#include <avr/pgmspace.h>
 
 #define setbit(port, bit) ((port) |= (uint8_t)_BV(bit))
 #define setbits(port, mask) ((port) |= (uint8_t)(mask))
@@ -28,63 +29,84 @@ email me at: gabriel@gabotronics.com
 #define	hibyte(x) (uint8_t)(x>>8)
 #define	lobyte(x) (uint8_t)(x&0x00FF)
 
-#define REVERSE(a) do                     \
-{                                         \
-  a=((a>>1)&0x55)|((a<<1)&0xaa);          \
-  a=((a>>2)&0x33)|((a<<2)&0xcc);          \
-  asm volatile("swap %0":"=r"(a):"0"(a)); \
+// FAR ADDRESS MACRO BY CARLOS LAMAS
+#define GET_FAR_ADDRESS(var)                \
+({                                          \
+    uint_farptr_t tmp;                      \
+    \
+    __asm__ __volatile__(                   \
+    \
+    "ldi	%A0, lo8(%1)"           "\n\t"  \
+    "ldi	%B0, hi8(%1)"           "\n\t"  \
+    "ldi	%C0, hh8(%1)"           "\n\t"  \
+    "clr	%D0"                    "\n\t"  \
+    :                                       \
+    "=d" (tmp)                              \
+    :                                       \
+    "p"  (&(var))                           \
+    );                                      \
+    tmp;                                    \
+})
+
+#define PFSTR(s) (__extension__({static const char __c[] PROGMEM = (s); GET_FAR_ADDRESS(__c[0]);}))
+
+#define REVERSE(a) do                       \
+{                                           \
+  a=((a>>1)&0x55)|((a<<1)&0xaa);            \
+  a=((a>>2)&0x33)|((a<<2)&0xcc);            \
+  asm volatile("swap %0":"=r"(a):"0"(a));   \
 } while(0) 
 
 // Multiply two 8bit signed numbers, return 8bit
-#define FMULS8(_a,_b)                     \
-    ({                                    \
-        int8_t _c;                        \
-        asm (                             \
-        "fmuls %[a], %[b]"    "\n\t"      \
-        "mov   %[c], R1"      "\n\t"      \
-        "clr    __zero_reg__"             \
-        : [c] "=r" (_c)                   \
+#define FMULS8(_a,_b)                       \
+    ({                                      \
+        int8_t _c;                          \
+        asm (                               \
+        "fmuls %[a], %[b]"    "\n\t"        \
+        "mov   %[c], R1"      "\n\t"        \
+        "clr    __zero_reg__"               \
+        : [c] "=r" (_c)                     \
         : [a] "a" ((uint8_t)(_a)),  [b] "a" ((uint8_t)(_b))); \
         _c;}) 
 
 // Multiply two 8bit signed numbers, use rounding, return 8bit
-#define FMULS8R(_a,_b)                    \
-    ({                                    \
-        int8_t _c;                        \
-        asm (                             \
-        "fmuls %[a], %[b]"    "\n\t"      \
-        "sbrc  r0, 7"         "\n\t"      \
-        "inc   r1"            "\n\t"      \
-        "mov   %[c], R1"      "\n\t"      \
-        "clr    __zero_reg__"             \
-        : [c] "=r" (_c)                   \
+#define FMULS8R(_a,_b)                      \
+    ({                                      \
+        int8_t _c;                          \
+        asm (                               \
+        "fmuls %[a], %[b]"    "\n\t"        \
+        "sbrc  r0, 7"         "\n\t"        \
+        "inc   r1"            "\n\t"        \
+        "mov   %[c], R1"      "\n\t"        \
+        "clr    __zero_reg__"               \
+        : [c] "=r" (_c)                     \
         : [a] "a" ((uint8_t)(_a)),  [b] "a" ((uint8_t)(_b))); \
         _c;})
 
 // Multiply two 8bit signed numbers, return 16bit
-#define FMULS(_a,_b)                    \
-    ({                                  \
-        int16_t _c;                     \
-        asm (                           \
-        "fmuls %[a], %[b]"  "\n\t"      \
-        "movw  %[c], R0"    "\n\t"      \
-        "clr    __zero_reg__"           \
-        : [c] "=r" (_c)                 \
+#define FMULS(_a,_b)                        \
+    ({                                      \
+        int16_t _c;                         \
+        asm (                               \
+        "fmuls %[a], %[b]"  "\n\t"          \
+        "movw  %[c], R0"    "\n\t"          \
+        "clr    __zero_reg__"               \
+        : [c] "=r" (_c)                     \
         : [a] "a" ((uint8_t)(_a)),  [b] "a" ((uint8_t)(_b))); \
         _c;}) 
 
 /*
 // Converts a decimal number to ASCII HEX representation ('0' thru 'F')
 #define NibbleToChar(_a) asm volatile ("rol %0" : "=r" (reg) : "0" (reg)) 
-    ({                                  \
-        asm (                           \
-        "subi %[a], 0xD0"   "\n\t"      \
-        "cpi  %[a], 0x3A"   "\n\t"      \
-        "brlt 0f"           "\n\t"      \
-        "subi %[a], 0xF9"   "\n\t"      \
-        "0:"                "\n\t"      \
-        : [a] "=r"                      \
-        : [a] "d"                       \
+    ({                                      \
+        asm (                               \
+        "subi %[a], 0xD0"   "\n\t"          \
+        "cpi  %[a], 0x3A"   "\n\t"          \
+        "brlt 0f"           "\n\t"          \
+        "subi %[a], 0xF9"   "\n\t"          \
+        "0:"                "\n\t"          \
+        : [a] "=r"                          \
+        : [a] "d"                           \
         }) */
 
 static __inline__ void NOP (void) { __asm__ volatile ( "nop    " "\n\t" ); }

@@ -3,42 +3,35 @@
  *
  * \brief Chip-specific system clock management functions
  *
- * Copyright (c) 2010-2012 Atmel Corporation. All rights reserved.
+ * Copyright (c) 2010-2018 Microchip Technology Inc. and its subsidiaries.
  *
  * \asf_license_start
  *
  * \page License
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ * Subject to your compliance with these terms, you may use Microchip
+ * software and any derivatives exclusively with Microchip products.
+ * It is your responsibility to comply with third party license terms applicable
+ * to your use of third party software (including open source software) that
+ * may accompany Microchip software.
  *
- * 1. Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- * 3. The name of Atmel may not be used to endorse or promote products derived
- *    from this software without specific prior written permission.
- *
- * 4. This software may only be redistributed and used in connection with an
- *    Atmel microcontroller product.
- *
- * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
- * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
- * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES,
+ * WHETHER EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE,
+ * INCLUDING ANY IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY,
+ * AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT WILL MICROCHIP BE
+ * LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, INCIDENTAL OR CONSEQUENTIAL
+ * LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND WHATSOEVER RELATED TO THE
+ * SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS BEEN ADVISED OF THE
+ * POSSIBILITY OR THE DAMAGES ARE FORESEEABLE.  TO THE FULLEST EXTENT
+ * ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN ANY WAY
+ * RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
+ * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
  *
  * \asf_license_stop
  *
+ */
+/*
+ * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
  */
 #ifndef XMEGA_SYSCLK_H_INCLUDED
 #define XMEGA_SYSCLK_H_INCLUDED
@@ -82,8 +75,8 @@ extern "C" {
  * \subsection sysclk_quickstart_use_case_1_setup_steps Initialization code
  * Add to the application initialization code:
  * \code
- *    sysclk_init();
- * \endcode
+	sysclk_init();
+\endcode
  *
  * \subsection sysclk_quickstart_use_case_1_setup_steps_workflow Workflow
  * -# Configure the system clocks according to the settings in conf_clock.h:
@@ -93,17 +86,17 @@ extern "C" {
  *   Add or uncomment the following in your conf_clock.h header file, commenting out all other
  *   definitions of the same symbol(s):
  *   \code
- *   #define CONFIG_SYSCLK_SOURCE        SYSCLK_SRC_PLL
- *
- *   // Fpll0 = (Fclk * PLL_mul) / PLL_div
- *   #define CONFIG_PLL0_SOURCE          PLL_SRC_XOSC
- *   #define CONFIG_PLL0_MUL             (32000000UL / BOARD_XOSC_HZ)
- *   #define CONFIG_PLL0_DIV             1
- *
- *   // Fbus = Fsys / (2 ^ BUS_div)
- *   #define CONFIG_SYSCLK_PSADIV        SYSCLK_PSADIV_1
- *   #define CONFIG_SYSCLK_PSBCDIV       SYSCLK_PSBCDIV_1_2
- *   \endcode
+	   #define CONFIG_SYSCLK_SOURCE        SYSCLK_SRC_PLL
+
+	   // Fpll0 = (Fclk * PLL_mul) / PLL_div
+	   #define CONFIG_PLL0_SOURCE          PLL_SRC_XOSC
+	   #define CONFIG_PLL0_MUL             (32000000UL / BOARD_XOSC_HZ)
+	   #define CONFIG_PLL0_DIV             1
+
+	   // Fbus = Fsys / (2 ^ BUS_div)
+	   #define CONFIG_SYSCLK_PSADIV        SYSCLK_PSADIV_1
+	   #define CONFIG_SYSCLK_PSBCDIV       SYSCLK_PSBCDIV_1_2
+\endcode
  *
  * \subsection sysclk_quickstart_use_case_1_example_workflow Workflow
  *  -# Configure the main system clock to use the output of the PLL module as its source:
@@ -112,17 +105,17 @@ extern "C" {
  *   \code #define CONFIG_PLL0_SOURCE            PLL_SRC_XOSC \endcode
  *  -# Configure the PLL0 module to multiply the external oscillator XOSC frequency up to 32MHz:
  *   \code
- *   #define CONFIG_PLL0_MUL             (32000000UL / BOARD_XOSC_HZ)
- *   #define CONFIG_PLL0_DIV             1
- *   \endcode
+	#define CONFIG_PLL0_MUL             (32000000UL / BOARD_XOSC_HZ)
+	#define CONFIG_PLL0_DIV             1
+\endcode
  *   \note For user boards, \c BOARD_XOSC_HZ should be defined in the board \c conf_board.h configuration
  *         file as the frequency of the crystal attached to XOSC.
  *  -# Configure the main CPU clock and slow peripheral bus to run at 16MHz, run the fast peripheral bus
  *     at the full 32MHz speed:
  *    \code
- *    #define CONFIG_SYSCLK_PSADIV       SYSCLK_PSADIV_1
- *    #define CONFIG_SYSCLK_PSBCDIV      SYSCLK_PSBCDIV_1_2
- *    \endcode
+	#define CONFIG_SYSCLK_PSADIV       SYSCLK_PSADIV_1
+	#define CONFIG_SYSCLK_PSBCDIV      SYSCLK_PSBCDIV_1_2
+\endcode
  *    \note Some dividers are powers of two, while others are integer division factors. Refer to the
  *          formulas in the conf_clock.h template commented above each division define.
  */
@@ -144,8 +137,8 @@ extern "C" {
  * \subsection sysclk_quickstart_use_case_2_setup_steps Initialization code
  * Add to the application initialization code:
  * \code
- *    sysclk_init();
- * \endcode
+	sysclk_init();
+\endcode
  *
  * \subsection sysclk_quickstart_use_case_2_setup_steps_workflow Workflow
  * -# Configure the system clocks according to the settings in conf_clock.h:
@@ -155,22 +148,22 @@ extern "C" {
  *   Add or uncomment the following in your conf_clock.h header file, commenting out all other
  *   definitions of the same symbol(s):
  *   \code
- *   #define CONFIG_SYSCLK_SOURCE        SYSCLK_SRC_PLL
- *
- *   // Fpll0 = (Fclk * PLL_mul) / PLL_div
- *   #define CONFIG_PLL0_SOURCE          PLL_SRC_XOSC
- *   #define CONFIG_PLL0_MUL             (32000000UL / BOARD_XOSC_HZ)
- *   #define CONFIG_PLL0_DIV             1
- *
- *   // Fbus = Fsys / (2 ^ BUS_div)
- *   #define CONFIG_SYSCLK_PSADIV        SYSCLK_PSADIV_1
- *   #define CONFIG_SYSCLK_PSBCDIV       SYSCLK_PSBCDIV_1_1
- *
- *   #define CONFIG_USBCLK_SOURCE        USBCLK_SRC_RCOSC
- *   #define CONFIG_OSC_RC32_CAL         48000000UL
- *   #define CONFIG_OSC_AUTOCAL          OSC_ID_RC32MHZ
- *   #define CONFIG_OSC_AUTOCAL_REF_OSC  OSC_ID_USBSOF
- *   \endcode
+	   #define CONFIG_SYSCLK_SOURCE        SYSCLK_SRC_PLL
+
+	   // Fpll0 = (Fclk * PLL_mul) / PLL_div
+	   #define CONFIG_PLL0_SOURCE          PLL_SRC_XOSC
+	   #define CONFIG_PLL0_MUL             (32000000UL / BOARD_XOSC_HZ)
+	   #define CONFIG_PLL0_DIV             1
+
+	   // Fbus = Fsys / (2 ^ BUS_div)
+	   #define CONFIG_SYSCLK_PSADIV        SYSCLK_PSADIV_1
+	   #define CONFIG_SYSCLK_PSBCDIV       SYSCLK_PSBCDIV_1_1
+
+	   #define CONFIG_USBCLK_SOURCE        USBCLK_SRC_RCOSC
+	   #define CONFIG_OSC_RC32_CAL         48000000UL
+	   #define CONFIG_OSC_AUTOCAL          OSC_ID_RC32MHZ
+	   #define CONFIG_OSC_AUTOCAL_REF_OSC  OSC_ID_USBSOF
+\endcode
  *
  * \subsection sysclk_quickstart_use_case_2_example_workflow Workflow
  *  -# Configure the main system clock to use the output of the PLL module as its source:
@@ -179,22 +172,22 @@ extern "C" {
  *   \code #define CONFIG_PLL0_SOURCE             PLL_SRC_XOSC \endcode
  *  -# Configure the PLL0 module to multiply the external oscillator XOSC frequency up to 32MHz:
  *   \code
- *   #define CONFIG_PLL0_MUL              (32000000UL / BOARD_XOSC_HZ)
- *   #define CONFIG_PLL0_DIV              1
- *   \endcode
+	#define CONFIG_PLL0_MUL              (32000000UL / BOARD_XOSC_HZ)
+	#define CONFIG_PLL0_DIV              1
+\endcode
  *   \note For user boards, \c BOARD_XOSC_HZ should be defined in the board \c conf_board.h configuration
  *         file as the frequency of the crystal attached to XOSC.
  *  -# Configure the main CPU and peripheral bus clocks to run at 32MHz:
  *    \code
- *    #define CONFIG_SYSCLK_PSADIV        SYSCLK_PSADIV_1
- *    #define CONFIG_SYSCLK_PSBCDIV       SYSCLK_PSBCDIV_1_2
- *    \endcode
+	#define CONFIG_SYSCLK_PSADIV        SYSCLK_PSADIV_1
+	#define CONFIG_SYSCLK_PSBCDIV       SYSCLK_PSBCDIV_1_2
+\endcode
  *    \note Some dividers are powers of two, while others are integer division factors. Refer to the
  *          formulas in the conf_clock.h template commented above each division define.
  *  -# Configure the USB module clock to use the internal fast (32MHz) RC oscillator:
  *    \code
- *    #define CONFIG_USBCLK_SOURCE        USBCLK_SRC_RCOSC
- *    \endcode
+	#define CONFIG_USBCLK_SOURCE        USBCLK_SRC_RCOSC
+\endcode
  *    \note When the internal RC oscillator is used for the USB module, it must be recalibrated to 48MHz for
  *          the USB peripheral to function. If this oscillator is then used as the main system clock source,
  *          the clock must be divided down via the peripheral and CPU bus clock division constants to ensure
@@ -202,10 +195,10 @@ extern "C" {
  *  -# Configure the internal fast (32MHz) RC oscillator to calibrate to 48MHz using the USB Start of Frame (SOF)
  *     as the calibration reference:
  *    \code
- *    #define CONFIG_OSC_RC32_CAL         48000000UL
- *    #define CONFIG_OSC_AUTOCAL          OSC_ID_RC32MHZ
- *    #define CONFIG_OSC_AUTOCAL_REF_OSC  OSC_ID_USBSOF
- *    \endcode
+	#define CONFIG_OSC_RC32_CAL         48000000UL
+	#define CONFIG_OSC_AUTOCAL          OSC_ID_RC32MHZ
+	#define CONFIG_OSC_AUTOCAL_REF_OSC  OSC_ID_USBSOF
+\endcode
  */
 
 /**
@@ -226,8 +219,8 @@ extern "C" {
  * \subsection sysclk_quickstart_use_case_3_setup_steps Initialization code
  * Add to the application initialization code:
  * \code
- *    sysclk_init();
- * \endcode
+	sysclk_init();
+\endcode
  *
  * \subsection sysclk_quickstart_use_case_3_setup_steps_workflow Workflow
  * -# Configure the system clocks according to the settings in conf_clock.h:
@@ -237,39 +230,39 @@ extern "C" {
  *   Add or uncomment the following in your conf_clock.h header file,
  *   commenting out all other definitions of the same symbol(s):
  *   \code
- *   #define CONFIG_SYSCLK_SOURCE                SYSCLK_SRC_RC2MHZ
- *
- *   #define CONFIG_OSC_AUTOCAL_RC2MHZ_REF_OSC   OSC_ID_RC32KHZ
- *
- *   #define CONFIG_USBCLK_SOURCE                USBCLK_SRC_RCOSC
- *   #define CONFIG_OSC_RC32_CAL                 48000000UL
- *   #define CONFIG_OSC_AUTOCAL_RC32MHZ_REF_OSC  OSC_ID_USBSOF
- *   \endcode
+	   #define CONFIG_SYSCLK_SOURCE                SYSCLK_SRC_RC2MHZ
+
+	   #define CONFIG_OSC_AUTOCAL_RC2MHZ_REF_OSC   OSC_ID_RC32KHZ
+
+	   #define CONFIG_USBCLK_SOURCE                USBCLK_SRC_RCOSC
+	   #define CONFIG_OSC_RC32_CAL                 48000000UL
+	   #define CONFIG_OSC_AUTOCAL_RC32MHZ_REF_OSC  OSC_ID_USBSOF
+\endcode
  *
  * \subsection sysclk_quickstart_use_case_3_example_workflow Workflow
  *  -# Configure the main system clock to use the internal 2MHz RC oscillator
  *   as its source:
  *   \code
- *   #define CONFIG_SYSCLK_SOURCE                SYSCLK_SRC_RC2MHZ
- *   \endcode
+	#define CONFIG_SYSCLK_SOURCE                SYSCLK_SRC_RC2MHZ
+\endcode
  *  -# Configure the 2MHz DFLL auto-calibration to use the internal 32KHz RC
  *   oscillator:
  *   \code
- *   #define CONFIG_OSC_AUTOCAL_RC2MHZ_REF_OSC   OSC_ID_RC32KHZ
- *   \endcode
+	#define CONFIG_OSC_AUTOCAL_RC2MHZ_REF_OSC   OSC_ID_RC32KHZ
+\endcode
  *   \note For auto-calibration it's typically more relevant to use an external
  *        32KHz crystal. So if that's the case use OSC_ID_XOSC instead.
  *  -# Configure the USB module clock to use the internal fast (32MHz) RC oscillator:
  *   \code
- *   #define CONFIG_USBCLK_SOURCE                USBCLK_SRC_RCOSC
- *   \endcode
+	#define CONFIG_USBCLK_SOURCE                USBCLK_SRC_RCOSC
+\endcode
  *  -# Configure the internal fast (32MHz) RC oscillator to calibrate to 48MHz
  *   using the USB Start of Frame (SOF) as the calibration reference:
  *   \code
- *   #define CONFIG_USBCLK_SOURCE                USBCLK_SRC_RCOSC
- *   #define CONFIG_OSC_RC32_CAL                 48000000UL
- *   #define CONFIG_OSC_AUTOCAL_RC32MHZ_REF_OSC  OSC_ID_USBSOF
- *   \endcode
+	#define CONFIG_USBCLK_SOURCE                USBCLK_SRC_RCOSC
+	#define CONFIG_OSC_RC32_CAL                 48000000UL
+	#define CONFIG_OSC_AUTOCAL_RC32MHZ_REF_OSC  OSC_ID_USBSOF
+\endcode
  */
 
 /* Wrap old config into new one */

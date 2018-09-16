@@ -4,42 +4,35 @@
  * \brief USB Device driver
  * Compliance with common driver UDD
  *
- * Copyright (c) 2011 - 2013 Atmel Corporation. All rights reserved.
+ * Copyright (c) 2011-2018 Microchip Technology Inc. and its subsidiaries.
  *
  * \asf_license_start
  *
  * \page License
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ * Subject to your compliance with these terms, you may use Microchip
+ * software and any derivatives exclusively with Microchip products.
+ * It is your responsibility to comply with third party license terms applicable
+ * to your use of third party software (including open source software) that
+ * may accompany Microchip software.
  *
- * 1. Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- * 3. The name of Atmel may not be used to endorse or promote products derived
- *    from this software without specific prior written permission.
- *
- * 4. This software may only be redistributed and used in connection with an
- *    Atmel microcontroller product.
- *
- * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
- * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
- * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES,
+ * WHETHER EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE,
+ * INCLUDING ANY IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY,
+ * AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT WILL MICROCHIP BE
+ * LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, INCIDENTAL OR CONSEQUENTIAL
+ * LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND WHATSOEVER RELATED TO THE
+ * SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS BEEN ADVISED OF THE
+ * POSSIBILITY OR THE DAMAGES ARE FORESEEABLE.  TO THE FULLEST EXTENT
+ * ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN ANY WAY
+ * RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
+ * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
  *
  * \asf_license_stop
  *
+ */
+/*
+ * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
  */
 
 #include "conf_usb.h"
@@ -638,7 +631,6 @@ bool udd_ep_set_halt(udd_ep_id_t ep)
 
 	ep_ctrl = udd_ep_get_ctrl(ep);
 	udd_endpoint_enable_stall(ep_ctrl);
-	udd_endpoint_clear_dtgl(ep_ctrl);
 
 	udd_ep_abort(ep);
 	return true;
@@ -651,6 +643,7 @@ bool udd_ep_clear_halt(udd_ep_id_t ep)
 	Assert(udd_ep_is_valid(ep));
 
 	ep_ctrl = udd_ep_get_ctrl(ep);
+	udd_endpoint_clear_dtgl(ep_ctrl);
 	if (!udd_endpoint_is_stall(ep_ctrl)) {
 		return true; // No stall on going
 	}
@@ -804,7 +797,7 @@ ISR(USB_BUSEVENT_vect)
 #if (0!=USB_DEVICE_MAX_EP)
 		// Abort all endpoint jobs on going
 		uint8_t i;
-		for (i = 1; i < USB_DEVICE_MAX_EP; i++) {
+		for (i = 1; i <= USB_DEVICE_MAX_EP; i++) {
 			udd_ep_abort(i);
 			udd_ep_abort(i | USB_EP_DIR_IN);
 		}
@@ -1014,7 +1007,6 @@ static void udd_ctrl_init(void)
 	udd_control_in_set_bytecnt(0);
 	udd_control_in_ack_tc();
 	udd_control_ack_in_underflow();
-	udd_control_out_ack_tc();
 	udd_control_ack_out_overflow();
 
 	udd_g_ctrlreq.callback = NULL;
@@ -1069,6 +1061,7 @@ static void udd_ctrl_setup_received(void)
 		udd_ep_control_state = UDD_EPCTRL_DATA_OUT;
 		// Clear packet to receive first packet
 		udd_control_out_clear_NACK0();
+		udd_control_out_ack_tc();
 	}
 }
 
@@ -1192,6 +1185,7 @@ static void udd_ctrl_out_received(void)
 	}
 	// Free buffer of OUT control endpoint to authorize next reception
 	udd_control_out_clear_NACK0();
+	udd_control_out_ack_tc();
 }
 
 static void udd_ctrl_underflow(void)
