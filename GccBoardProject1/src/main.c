@@ -15,11 +15,11 @@
 void isp_start_appli(void);
 
 FUSES = {
-    .FUSEBYTE0 = 0xFF,  // JTAG not used, ***NEEDS*** to be off
-    .FUSEBYTE1 = 0x00,  // Watchdog Configuration
-    .FUSEBYTE2 = 0xBD,  // Reset Configuration, BOD sampled during power down
-    .FUSEBYTE4 = 0xF7,  // 4ms Start-up Configuration
-    .FUSEBYTE5 = 0xEB,  // No EESAVE on chip erase, BOD 2.4V when active
+	.FUSEBYTE0 = 0xFF,  // JTAG not used, ***NEEDS*** to be off
+	.FUSEBYTE1 = 0x00,  // Watchdog Configuration
+	.FUSEBYTE2 = 0xBF,  // Reset Configuration, BOD off during power down
+	.FUSEBYTE4 = 0xF7,  // 4ms Start-up Configuration
+	.FUSEBYTE5 = 0xDB,  // No EESAVE on chip erase, BOD sampled when active, 2.4V BO level
 };
 
 // Disable writing to the bootloader section
