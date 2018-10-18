@@ -90,12 +90,14 @@ int main (void) {
         lcd_put5x8(42,14,PFSTR("TO EXIT"));
         lcd_put5x8(6,15,PFSTR("<= PRESS  BUTTONS =>"));
         dma_display();
-		VPORT1.OUT = 0b00100000;			// Buzzer
-		for(uint16_t t=10; t<1000; t+=4) {	// Intro Sound to signal bootloader mode
+		VPORT1.OUT = 0b00100000;			// Prepare buzzer differential drive
+		for(uint16_t t=8; t<1000; t+=4) {	// Intro Sound to signal bootloader mode
 			for(uint16_t n=t; n<1010; n++) { _delay_us(5); }
-			VPORT1.OUT ^= 0b00110000;
+			VPORT1.OUT ^= 0b00110000;       // Toggle Buzzer
+            if((t&0x003F) == 0x00) VPORT1.OUT ^= 0b00000010;   // Toggle Green LED
+            if((t&0x003F) == 0x20) VPORT1.OUT ^= 0b00000100;   // Toggle Red LED
 		}
-
+        VPORT1.OUT = 0;			// Turn off Buzzer and LEDs
 		udc_start();    // Start the USB Device stack
 		udc_attach();   // Attach device to the bus when possible
         
